@@ -1,0 +1,162 @@
+{
+    "modName": "KO_Concequences",
+    "displayName": "KO Concequences",
+    "minMcmVersion": 2,
+    "pluginRequirements": ["Knockout Framework.esm", "RealHandcuffs.esp", "KO_Concequences.esp"],
+    "pages": 
+    [{
+        "pageDisplayName": "Hand Settings", 
+        "content":    
+        [{
+            "text": "Handcuff Settings",
+            "type": "section"
+        },
+        {
+            "text": "Handcuff chance",
+            "type": "slider",
+            "help": "Chances that the player will be equipped with Handcuffs; 0 = Never",
+            "valueOptions": 
+            {
+                
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "HandcuffChance"
+            }
+        }]
+    },
+    {
+        "pageDisplayName": "Collar Settigns",
+        "content":
+        [{
+            "text": "Collar Settings",
+            "type": "section"
+        },
+        {
+            "text": "Collar chance",
+            "type": "slider",
+            "help": "Chances that the player will be equipped with a Collar; 0 = Never",
+            "valueOptions": 
+            { 
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "CollarChance"
+            }
+            
+        },
+        {
+            "text": "Enable Code Lock",
+            "type": "switcher",
+            "help": "Controls whether the collar will spawn with a random code",
+            "valueOptions": 
+            {
+                "sourceType": "PropertyValueBool",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "PasswordProtect"
+            }
+        },
+        {
+            "text": "Wrong Code Action",
+            "type": "dropdown",
+            "help": "What will happen if the incorrect code is entered into the collar. Lockout will prevent you from attempting another password for a time. Random will never select Nothing.",
+            "valueOptions": 
+            {
+                "options": ["Nothing", "Activate Collar", "Lockout", "Activate and Lockout", "Random"],
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "WrongCodeAction"
+            }
+        },
+        {
+            "text": "",
+            "type": "section"   
+        },
+        {
+            "text": "Enable Punishment mode?",
+            "type": "switcher",
+            "help": "Allows the possibility of the collar spawning with punishment mode enabled, which will trigger the collar a certian amount of times each in-game hour",
+            "valueOptions": 
+            {
+                "sourceType": "PropertyValueBool",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "PunishEnable"
+            },
+            "groupControl": 1
+        },
+        {
+            "text": "Punishment chance",
+            "type": "slider",
+            "help": "Chances that the player will spawn with punishment mode enabled; 0 = Never",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "PunishChance"
+            },
+            "groupCondition": 1
+        },
+        {
+            "type": "spacer",
+            "height": 20,
+            "groupCondition": 1
+        },
+        {
+            "text": "The maximum should ALWAYS be equal to or higer than the minimum. You WILL crash if you don't follow this rule.",
+            "type": "text",
+            "groupCondition": 1
+        },
+        {
+            "text": "Maxumim triggers per hour",
+            "type": "slider",
+            "help": "The max amount of times the collar will be allowed to trigger per in-game hour.",
+            "valueOptions": 
+            {
+                "min": 1,
+                "max": 6,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "MaxPunishTriggers"
+            },
+            "groupCondition": 1
+        },
+        {
+            "text": "Minimum triggers per hour",
+            "type": "slider",
+            "help": "The minimum amount of times the collar will be required to trigger per in-game hour.",
+            "valueOptions": 
+            { 
+                "min": 1,
+                "max": 6,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "MinPunishTriggers"
+            },
+            "groupCondition": 1
+        },
+        {
+            "text": "Punishment Deferral Time",
+            "type": "slider",
+            "help": "This prevents the collar from triggering while the player is KO'd. If you have issues with the collar triggering during a KO event, increase this value",
+            "valueOptions": 
+            { 
+                "min": 15,
+                "max": 120,
+                "step": 1,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "PunishDefer"
+            },
+            "groupCondition": 1
+        }
+    ]}
+]}
