@@ -64,7 +64,7 @@ Event KoFrameworkEvents.OnKnockOutEnd(KoFrameworkEvents akSender, Var[] akArgs)
     EndIf
 
     ;If they're not humanoid, they're not gonna lock some shit onto the player
-    If (agressor.getRace().GetName() == "HumanRace" || agressor.getRace().GetName() == "GhoulRace")
+    If (agressor.getRace().GetName() != "HumanRace" && agressor.getRace().GetName() != "GhoulRace")
         DeferTorture()
         return
     EndIf
