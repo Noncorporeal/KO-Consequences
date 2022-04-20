@@ -20,15 +20,45 @@
                 
                 "min": 0,
                 "max": 100,
-                "step": 1,
+                "step": 5,
                 "sourceType": "PropertyValueInt",
                 "sourceForm": "KO_Concequences.esp|1ECB",
                 "propertyName": "HandcuffChance"
             }
+        },
+        {
+            "text": "Hinged Handcuff chance",
+            "type": "slider",
+            "help": "Chances that the handcuffs will spawn with a hinge instead of a chain; 0 = Never",
+            "valueOptions": 
+            {
+                
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "HingedHandcuffs"
+            }
+        },
+        {
+            "text": "High Security Handcuff chance",
+            "type": "slider",
+            "help": "Chances that the handcuffs will spawn as high security, being more difficult to escape; 0 = Never",
+            "valueOptions": 
+            {
+                
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "HighSecurityHandcuffs"
+            }
         }]
     },
     {
-        "pageDisplayName": "Collar Settigns",
+        "pageDisplayName": "Collar Settings",
         "content":
         [{
             "text": "Collar Settings",
@@ -96,7 +126,7 @@
             {
                 "min": 0,
                 "max": 100,
-                "step": 1,
+                "step": 5,
                 "sourceType": "PropertyValueInt",
                 "sourceForm": "KO_Concequences.esp|1ECB",
                 "propertyName": "PunishChance"
@@ -151,7 +181,7 @@
             { 
                 "min": 15,
                 "max": 120,
-                "step": 1,
+                "step": 5,
                 "sourceType": "PropertyValueInt",
                 "sourceForm": "KO_Concequences.esp|1ECB",
                 "propertyName": "PunishDefer"
