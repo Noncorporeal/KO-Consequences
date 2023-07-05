@@ -1,0 +1,1 @@
+Scriptname KOC_CollarRemoveCheck

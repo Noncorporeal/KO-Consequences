@@ -13,6 +13,9 @@ GlobalVariable Property KOC_CurrentPasscode Auto
 ReferenceAlias Property AgressorAlias Auto
 ReferenceAlias Property CurrentCollar Auto
 Actor Property agressor Auto
+Form Property RH_RemoteTrigger Auto
+Race Property HumanRace Auto
+Race Property GhoulRace Auto
 
 ;MCM Handcuff Settings
 int Property HandcuffChance = 50 Auto
@@ -28,6 +31,14 @@ int Property PunishChance = 20 Auto
 int Property MaxPunishTriggers = 2 Auto
 int Property MinPunishTriggers = 1 Auto
 int Property PunishDefer = 30 Auto
+
+float Property ShockModWeight = 70.0 Auto
+float Property ThrobbingModWeight = 20.0 Auto
+float Property ExplosiveModWeight = 10.0 Auto
+
+float Property MarkTwoWeight = 50.0 Auto
+float Property MarkThreeWeight = 30.0 Auto
+float Property HackedWeight = 20.0 Auto
 
 int Property CurrentPunishLevel = 1 Auto ;Assuming not active at start of script
 
@@ -59,19 +70,24 @@ Event KoFrameworkEvents.OnKnockOutEnd(KoFrameworkEvents akSender, Var[] akArgs)
 
     ;The player knocked themselves out... somehow. We don't want to do anything except pause torture 
     If(agressor == GetPlayer() && victim == GetPlayer())
+        Debug.MessageBox("Player KO'd Themselves")
         DeferTorture()
         return
     EndIf
 
     ;If they're not humanoid, they're not gonna lock some shit onto the player
-    If (agressor.getRace().GetName() != "HumanRace" && agressor.getRace().GetName() != "GhoulRace")
-        DeferTorture()
-        return
+    If(agressor.getRace() != HumanRace)
+        If(agressor.getRace() != GhoulRace)
+            Debug.MessageBox("Agressor is not Humaniod")
+            DeferTorture()
+            return
+        EndIf
     EndIf
     
     ;We know the player is in a valid state, run the scripts
     EquipHandcuffs()
     EquipCollar()
+    GiveAgressorTrigger(akArgs[1] as Actor)
 
     return
 EndEvent
@@ -84,9 +100,11 @@ EndEvent
 Function EquipHandcuffs()
     ;initial check that player does not have handcuffs equipped.
     ObjectReference[] restraint = Utility.VarToVarArray(RH_MainQuest.GetEquippedRestraintsWithEffect(GetPlayer(), 2)) as ObjectReference[]
+    Debug.Messagebox("Handcuffs Equipped: " + restraint)
     If (RandomInt() <= HandcuffChance && restraint.Length == 0)
+        Debug.Messagebox("Equipping Handcuffs")
         ;equip handcuffs, (Player, Chance for Hinged Handcuffs, Chance for High Security Handcuffs, Flag:add to player silently)
-        RH_MainQuest.CreateAndEquipRandomHandcuffs(Getplayer(),HingedHandcuffs,20,"FlagAddRemoveObjectsSilently")
+        RH_MainQuest.CreateAndEquipRandomHandcuffs(Getplayer(),HingedHandcuffs,HighSecurityHandcuffs,"FlagAddRemoveObjectsSilently")
     EndIf
 EndFunction
 
@@ -98,16 +116,43 @@ EndFunction
 Function EquipCollar()
     ;initial check that player does not have a collar equipped.
     ObjectReference[] restraint = Utility.VarToVarArray(RH_MainQuest.GetEquippedRestraintsWithEffect(GetPlayer(), 4)) as ObjectReference[]
+    Debug.MessageBox("Collar Equipped: " + restraint)
     If (RandomInt() <= CollarChance && restraint.Length == 0)
-        ;equip collar, (Player, Chance for Pulsing Shock Module, Chance for 4 Digit code/Torture Avalible, Flag:add to player silently)
-        ObjectReference collar = RH_MainQuest.CreateRandomShockCollarEquipOnActor(GetPlayer(),20,100,2)
+
+        Float[] modPercentages = GetModWeightPercentages()
+        Int moduleType = RandomInt()
+        If(moduleType <= modPercentages[1])
+            moduleType = 1
+        ElseIf(moduleType > modPercentages[1] && moduleType <= modPercentages[1] + modPercentages[2])
+            moduleType = 2
+        Else 
+            moduleType = 0
+        EndIf
+
+        Float[] firmwarePercentages = GetFirmwareWeightPercentages()
+        Int firmwareType = RandomInt()
+        If(firmwareType <= firmwarePercentages[1])
+            firmwareType = 4
+        ElseIf(firmwareType > firmwarePercentages[1] && firmwareType <= firmwarePercentages[1] + firmwarePercentages[2])
+            firmwareType = 8
+        Else
+            firmwareType = 0
+        EndIf
+        Debug.MessageBox("Equipping Collar, Firmware Type: " + firmwareType + " Mod Type: " + moduleType )
+        Debug.MessageBox("Firmware Percentages: " + firmwarePercentages)
+        Debug.MessageBox("Mod Percentages: " + modPercentages)
+        ObjectReference collar = RH_MainQuest.CreateShockCollarWithModsEquipOnActor(GetPlayer(), 2, firmwareType + moduleType)
+        
+        
         
         If(PasswordProtect)
+            Debug.MessageBox("Setting Passcode")
             SetCode(collar)
             SetWrongCodeAction(collar)
         EndIf
         
         If(PunishEnable)
+            Debug.Messagebox("Enabling Punish")
             SetPunish(collar)
         EndIf
 
@@ -146,6 +191,29 @@ Function SetPunish(ObjectReference collar)
     EndIf
 EndFunction
 
+Function GiveAgressorTrigger(ObjectReference agressor)
+    ObjectReference newTrigger = RH_RemoteTrigger as ObjectReference
+    RH_MainQuest.SetPowerfulTransmitter(newTrigger)
+    agressor.AddItem(newTrigger, 1, true)
+EndFunction
+
+Float[] Function GetModWeightPercentages()
+    Float TotalWeight = ShockModWeight + ThrobbingModWeight + ExplosiveModWeight
+    Float[] weights = new Float[3]
+    weights[0] = ShockModWeight/TotalWeight * 100
+    weights[1] = ThrobbingModWeight/TotalWeight * 100
+    weights[2] = ExplosiveModWeight/TotalWeight * 100
+    return weights
+EndFunction
+
+Float[] Function GetFirmwareWeightPercentages()
+    Float TotalWeight = MarkTwoWeight + MarkThreeWeight + HackedWeight  
+    Float[] weights = new Float[3]
+    weights[0] = MarkTwoWeight/TotalWeight * 100
+    weights[1] = MarkThreeWeight/TotalWeight * 100
+    weights[2] = HackedWeight/TotalWeight * 100
+    return weights
+EndFunction
 
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;KO Framework has no method to check the length of time a player is KO'd. 

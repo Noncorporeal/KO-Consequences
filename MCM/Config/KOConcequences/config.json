@@ -103,7 +103,128 @@
             }
         },
         {
-            "text": "",
+            "text": "Agressor Trigger Time Minimum",
+            "type": "slider",
+            "help": "Minimum amount of time between triggers of the collar by an enemy ",
+            "valueOptions": 
+            {
+                "min": 10,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|03002DFF",
+                "propertyName": "AgressorTriggerMin"
+            }
+        },
+        {
+            "text": "Agressor Trigger Time Maximum",
+            "type": "slider",
+            "help": "Maximum amount of time between triggers of the collar by an enemy ",
+            "valueOptions": 
+            {
+                "min": 30,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|03002DFF",
+                "propertyName": "AgressorTriggerMax"
+            }
+        },
+        {
+            "text":"Collar Weights",
+            "type":"section"
+        },
+        {
+            "text": "Shock Module",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "ShockModWeight"
+            }
+        },
+        {
+            "text": "Throbbing Shock Module",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "ThrobbingModWeight"
+            }
+        },
+        {
+            "text": "Explosive Module",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "ExplosiveModWeight"
+            }
+        }, 
+        {
+            "type": "spacer",
+            "height": 20
+        },
+        {
+            "text": "Mark II Firmware",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "MarkTwoWeight"
+            }
+        },
+        {
+            "text": "Mark III Firmware",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "MarkThreeWeight"
+            }
+        },
+ 
+        {
+            "text": "Hacked Firmware",
+            "type": "slider",
+            "help": "",
+            "valueOptions": 
+            {
+                "min": 0,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueFloat",
+                "sourceForm": "KO_Concequences.esp|1ECB",
+                "propertyName": "HackedWeight"
+            }
+        },
+        {
+            "text": "Punishment Mode",
             "type": "section"   
         },
         {
