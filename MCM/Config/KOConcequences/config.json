@@ -103,6 +103,34 @@
             }
         },
         {
+            "text": "Agressor Trigger Time Minimum",
+            "type": "slider",
+            "help": "Minimum amount of time between triggers of the collar by an enemy ",
+            "valueOptions": 
+            {
+                "min": 10,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|03002DFF",
+                "propertyName": "AgressorTriggerMin"
+            }
+        },
+        {
+            "text": "Agressor Trigger Time Maximum",
+            "type": "slider",
+            "help": "Maximum amount of time between triggers of the collar by an enemy ",
+            "valueOptions": 
+            {
+                "min": 30,
+                "max": 100,
+                "step": 5,
+                "sourceType": "PropertyValueInt",
+                "sourceForm": "KO_Concequences.esp|03002DFF",
+                "propertyName": "AgressorTriggerMax"
+            }
+        },
+        {
             "text": "",
             "type": "section"   
         },

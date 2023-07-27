@@ -13,6 +13,9 @@ GlobalVariable Property KOC_CurrentPasscode Auto
 ReferenceAlias Property AgressorAlias Auto
 ReferenceAlias Property CurrentCollar Auto
 Actor Property agressor Auto
+Form Property RH_RemoteTrigger Auto
+Race Property HumanRace Auto
+Race Property GhoulRace Auto
 
 ;MCM Handcuff Settings
 int Property HandcuffChance = 50 Auto
@@ -59,14 +62,18 @@ Event KoFrameworkEvents.OnKnockOutEnd(KoFrameworkEvents akSender, Var[] akArgs)
 
     ;The player knocked themselves out... somehow. We don't want to do anything except pause torture 
     If(agressor == GetPlayer() && victim == GetPlayer())
+        Debug.MessageBox("Player KO'd Themselves")
         DeferTorture()
         return
     EndIf
 
     ;If they're not humanoid, they're not gonna lock some shit onto the player
-    If (agressor.getRace().GetName() != "HumanRace" && agressor.getRace().GetName() != "GhoulRace")
-        DeferTorture()
-        return
+    If(agressor.getRace() != HumanRace)
+        If(agressor.getRace() != GhoulRace)
+            Debug.MessageBox("Agressor is not Humaniod")
+            DeferTorture()
+            return
+        EndIf
     EndIf
     
     ;We know the player is in a valid state, run the scripts
@@ -84,9 +91,11 @@ EndEvent
 Function EquipHandcuffs()
     ;initial check that player does not have handcuffs equipped.
     ObjectReference[] restraint = Utility.VarToVarArray(RH_MainQuest.GetEquippedRestraintsWithEffect(GetPlayer(), 2)) as ObjectReference[]
+    Debug.Messagebox("Handcuffs Equipped: " + restraint)
     If (RandomInt() <= HandcuffChance && restraint.Length == 0)
+        Debug.Messagebox("Equipping Handcuffs")
         ;equip handcuffs, (Player, Chance for Hinged Handcuffs, Chance for High Security Handcuffs, Flag:add to player silently)
-        RH_MainQuest.CreateAndEquipRandomHandcuffs(Getplayer(),HingedHandcuffs,20,"FlagAddRemoveObjectsSilently")
+        RH_MainQuest.CreateAndEquipRandomHandcuffs(Getplayer(),HingedHandcuffs,HighSecurityHandcuffs,"FlagAddRemoveObjectsSilently")
     EndIf
 EndFunction
 
@@ -98,16 +107,20 @@ EndFunction
 Function EquipCollar()
     ;initial check that player does not have a collar equipped.
     ObjectReference[] restraint = Utility.VarToVarArray(RH_MainQuest.GetEquippedRestraintsWithEffect(GetPlayer(), 4)) as ObjectReference[]
+    Debug.MessageBox("Collar Equipped: " + restraint)
     If (RandomInt() <= CollarChance && restraint.Length == 0)
         ;equip collar, (Player, Chance for Pulsing Shock Module, Chance for 4 Digit code/Torture Avalible, Flag:add to player silently)
+        Debug.MessageBox("Equipping Collar")
         ObjectReference collar = RH_MainQuest.CreateRandomShockCollarEquipOnActor(GetPlayer(),20,100,2)
         
         If(PasswordProtect)
+            Debug.MessageBox("Setting Passcode")
             SetCode(collar)
             SetWrongCodeAction(collar)
         EndIf
         
         If(PunishEnable)
+            Debug.Messagebox("Enabling Punish")
             SetPunish(collar)
         EndIf
 
@@ -146,7 +159,10 @@ Function SetPunish(ObjectReference collar)
     EndIf
 EndFunction
 
-
+Function GiveAgressorTrigger(ObjectReference agressor)
+    agressor.AddItem(RH_RemoteTrigger, 1, true)
+    (agressor as Actor).EquipItem(RH_RemoteTrigger, true, true) 
+EndFunction
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;KO Framework has no method to check the length of time a player is KO'd. 
 ;If the punish trigger is enabled immediatly, the player might die instantly.
